@@ -31,7 +31,7 @@ while(True):
     print(f"Current file path = {file_path}")
 
     print(f"\nChatGPT: {message}\n")
-    markdown.write_to_md_file(f'''### Question: {prompt}\n### Answer: {message}''', file_path = file_path)
+    markdown.write_to_md_file(f'''  \n### Question: {prompt}\n### Answer: {message}''', file_path = file_path)
 
 for i, msg in enumerate(chat_log):
     markdown.write_to_md_file(f'''### {i + 1} Question: {msg[0]}  \n### Answer: \n{msg[1]}''', file_path= file_path)

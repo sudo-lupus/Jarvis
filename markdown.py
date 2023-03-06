@@ -7,7 +7,7 @@ def create_initial_md_file(file_path = f'''./Logs/{str(datetime.datetime.now()).
     file_path = file_path
 
     # Define the markdown content
-    markdown_content = "# ChatGPT log file"
+    markdown_content = "# ChatGPT log file\n"
 
     if os.path.exists(file_path) and overwrite == False:
         print(f"There already is a markdown file in {file_path}")
