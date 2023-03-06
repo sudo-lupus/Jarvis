@@ -1,5 +1,5 @@
 import openai
-import config
+import config       # Supply your own API Key
 import markdown
 import datetime
 
@@ -22,7 +22,7 @@ chat_log = []
 file_path = ""
 
 file_path = markdown.create_initial_md_file(overwrite=True)
-markdown.write_to_md_file(f"\n\# Session of {datetime.datetime.now()}\n  ", file_path= file_path)
+markdown.write_to_md_file(f"\n# Session of {datetime.datetime.now()}\n  ", file_path= file_path)
 
 while(True):
     prompt = input("What would you like to ask ChatGPT?\nEnter 'Q' to exit\nYou: ")
@@ -30,7 +30,8 @@ while(True):
         print("You have exited the chat")
         break
     message = request(prompt)
-    messages.append(message)
     print(f"Current file path = {file_path}")
     print(f"\nChatGPT: {message}\n")
+    if prompt == "continue":
+        markdown.write_to_md_file(f'''\n{message}''', file_path = file_path)
     markdown.write_to_md_file(f'''  \n### Question: {prompt}\n### Answer:\n{message}''', file_path = file_path)
