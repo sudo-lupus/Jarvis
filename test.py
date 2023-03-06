@@ -1,6 +1,7 @@
 import openai
 import config
 import markdown
+import datetime
 
 def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key):
     prompt += "\nFormulate your whole answer in Markdown Format"
@@ -26,6 +27,7 @@ while(True):
     chat_log.append([prompt, message])
     counter += 1
 
+markdown.write_to_md_file(f"\#Session of {datetime.datetime.now()}\n  ")
 
 for i, msg in enumerate(chat_log):
-    markdown.write_to_md_file(f"\n  \#\#\#{i + 1}\nQuestion: {msg[0]}  \nAnswer: {msg[1]}")
+    markdown.write_to_md_file(f'''  \#\#\#{i + 1} Question: {msg[0]}  \n\#Answer: {msg[1]}''')

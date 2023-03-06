@@ -7,12 +7,10 @@ def create_initial_md_file(file_path = '''./Logs/md_logs.md''', overwrite = Fals
 
     # Define the markdown content
     markdown_content = """
-    # My Markdown File
-
-    This is an example of a markdown file created using Python.
+    # ChatGPT log file
     """
 
-    if os.path.exists(file_path):
+    if os.path.exists(file_path) and overwrite == False:
         print(f"There already is a markdown file in {file_path}")
         return 1
 
@@ -35,4 +33,5 @@ def write_to_md_file(content, file_path = '''./Logs/md_logs.md'''):
     if os.path.exists(file_path):
         with open(file_path, "a") as file:
             file.write(new_markdown_content)
-        
+
+create_initial_md_file(overwrite = True)
