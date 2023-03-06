@@ -17,7 +17,6 @@ def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key):
     message = str.strip(completion["choices"][0]["message"]["content"])
     return message
 
-counter = 0
 chat_log = []
 file_path = ""
 
