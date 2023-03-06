@@ -8,7 +8,7 @@ messages = [{"role": "system", "content" : "You are a helpful assistant."}]
 def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key, markdown = True):
     global messages
     if markdown == True:
-        prompt += "Clearly structure your answer and output it in a markdown format."
+        prompt += "Structure your answer and output it in a markdown format."
     messages.append({"role": "user", "content": prompt})
     openai.api_key = api_key
     completion = openai.ChatCompletion.create(
