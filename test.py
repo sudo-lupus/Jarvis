@@ -34,4 +34,5 @@ while(True):
     print(f"\nChatGPT: {message}\n")
     if prompt == "continue":
         markdown.write_to_md_file(f'''\n{message}''', file_path = file_path)
-    markdown.write_to_md_file(f'''  \n### Question: {prompt}\n### Answer:\n{message}''', file_path = file_path)
+    else:
+        markdown.write_to_md_file(f'''  \n### Question: {prompt}\n### Answer:\n{message}''', file_path = file_path)
