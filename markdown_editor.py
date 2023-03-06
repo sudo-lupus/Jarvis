@@ -2,6 +2,8 @@
 import os
 import datetime
 import config
+import markdown
+import re
 
 def create_initial_md_file(file_path = f'''./Logs/{str(datetime.datetime.now()).replace(" ","_")}_md_logs.md''', overwrite = False, user = "Lupus"):
     # Set the file path and name
@@ -33,3 +35,26 @@ def write_to_md_file(content, file_path = '''./Logs/md_logs.md'''):
     if os.path.exists(file_path):
         with open(file_path, "a") as file:
             file.write(new_markdown_content)
+
+def add_toc(file_path):
+
+    # Open the original markdown file and read its contents
+    with open(file_path, 'r') as f:
+        content = f.read()
+
+    # Parse the markdown file using the markdown library
+    html = markdown.markdown(content)
+
+    # Find all the headers in the HTML output
+    headers = re.findall(r'<h([1-6]) id=".*?">(.*?)</h[1-6]>', html)
+
+    # Create the table of contents in markdown format
+    toc = ''
+    for header in headers:
+        level, title = header
+        indent = '    ' * (int(level) - 1)
+        toc += f'{indent}- [{title}](#{title.lower().replace(" ", "-")})\n'
+
+    # Prepend the table of contents to the original markdown file
+    with open(file_path, 'w') as f:
+        f.write(f'{toc}\n{content}')

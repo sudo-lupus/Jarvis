@@ -1,37 +1,45 @@
 import openai
 import config       # Supply your own API Key
-import markdown
+import markdown_editor
 import datetime
 
-messages = []
+messages = [{"role": "system", "content" : "You are a helpful assistant."}]
 
-def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key):
+def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key, markdown = True):
     global messages
-    prompt += "\nFormulate your whole answer in Markdown Format"
+    if markdown == True:
+        prompt += "Clearly structure your answer and output it in a markdown format."
     messages.append({"role": "user", "content": prompt})
     openai.api_key = api_key
     completion = openai.ChatCompletion.create(
       model= model,
-      messages = messages
+      messages = messages,
     )
     message = str.strip(completion["choices"][0]["message"]["content"])
-    return message
+    tokens_used = completion["usage"]["total_tokens"]
+    return {"response" : message, "tokens" : tokens_used}
 
 chat_log = []
-file_path = ""
+counter = 1
 
-file_path = markdown.create_initial_md_file(overwrite=True)
-markdown.write_to_md_file(f"\n# Session of {datetime.datetime.now()}\n  ", file_path= file_path)
+file_path = markdown_editor.create_initial_md_file(overwrite=True)
+markdown_editor.write_to_md_file(f"\n# Session of {datetime.datetime.now()}\n  ", file_path= file_path)
 
 while(True):
     prompt = input("What would you like to ask ChatGPT?\nEnter 'Q' to exit\nYou: ")
     if(prompt in ["Q", "q"]):
         print("You have exited the chat")
         break
-    message = request(prompt)
+    response = request(prompt)
+    message = response["response"]
+    token_usage = response["tokens"]
     print(f"Current file path = {file_path}")
     print(f"\nChatGPT: {message}\n")
     if prompt == "continue":
-        markdown.write_to_md_file(f'''\n{message}''', file_path = file_path)
+        markdown_editor.write_to_md_file(f'''\n{message}''', file_path = file_path)
     else:
-        markdown.write_to_md_file(f'''  \n### Question:  \n*{prompt}*\n### Answer:\n{message}''', file_path = file_path)
+        markdown_editor.write_to_md_file(f'''  \n### {counter}. Question:  \n*{prompt}*  \n{message}''', file_path = file_path)
+        counter += 1
+    print(token_usage)
+
+markdown_editor.add_toc(file_path)
