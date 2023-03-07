@@ -1,9 +1,9 @@
 import openai
-import config       # Supply your own API Key
+import config           # Supply your own API Key
 import markdown_editor
 import datetime
 
-messages = [{"role": "system", "content" : "You are a helpful assistant."}]
+messages = [{"role": "system", "content" : f"You are a helpful assistant. Your answers are elaborated. The user's name is '{config.user_name}'"}]
 
 def request(prompt, model = "gpt-3.5-turbo", api_key = config.api_key, markdown = True):
     global messages
@@ -41,5 +41,3 @@ while(True):
         markdown_editor.write_to_md_file(f'''  \n### {counter}. Question:  \n*{prompt}*  \n{message}''', file_path = file_path)
         counter += 1
     print(token_usage)
-
-markdown_editor.add_toc(file_path)
