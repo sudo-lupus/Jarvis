@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import openai
 import config           # Supply your own API Key
 import markdown_editor
